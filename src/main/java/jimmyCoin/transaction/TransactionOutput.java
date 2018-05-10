@@ -10,6 +10,7 @@ public class TransactionOutput {
     private PublicKey recepient;
     private double value;
     private String parentTransactionId;
+    private PublicKey recipient;
 
     public TransactionOutput(PublicKey recepient, double value, String parentTransactionId) {
         this.recepient = recepient;
@@ -29,5 +30,9 @@ public class TransactionOutput {
 
     public double getValue() {
         return value;
+    }
+
+    public PublicKey getRecipient() {
+        return recipient;
     }
 }

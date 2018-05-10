@@ -49,7 +49,7 @@ public class Transaction {
         return true;
     }
 
-    private double getInputsValue() {
+    public double getInputsValue() {
         double total = 0;
         for (TransactionInput input : inputs
              ) {
@@ -61,7 +61,7 @@ public class Transaction {
         return total;
     }
 
-    private double getOutputsValue() {
+    public double getOutputsValue() {
         double total = 0;
         for (TransactionOutput output : outputs
                 ) {
@@ -131,4 +131,27 @@ public class Transaction {
         return CoinUtils.verifyECDSASig(sender, data, signature);
     }
 
+    public String getId() {
+        return transactionId;
+    }
+
+    public void setId(String id) {
+        this.transactionId = id;
+    }
+
+    public List<TransactionOutput> getOutputs() {
+        return outputs;
+    }
+
+    public PublicKey getRecipient() {
+        return recipient;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public List<TransactionInput> getInputs() {
+        return inputs;
+    }
 }

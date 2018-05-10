@@ -1,11 +1,15 @@
 package jimmyCoin.wallet;
 
 import jimmyCoin.JimmyChain;
+import jimmyCoin.transaction.Transaction;
+import jimmyCoin.transaction.TransactionInput;
 import jimmyCoin.transaction.TransactionOutput;
 
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Wallet {
@@ -44,6 +48,49 @@ public class Wallet {
             total += UTXO.getValue();
         }
         return total;
+    }
+
+    public Transaction sendFunds(PublicKey recirient, double value){
+        if(notEnoughFunds(value)){
+            System.out.println("#Not Enough funds to send transaction. Transaction Discarded.");
+            return null;
+        }
+
+        List<TransactionInput> inputs = initInputsList(value);
+        removeInpunsFromUTXos(inputs);
+        Transaction newTransaction = new Transaction(publicKey, recirient, value, inputs);
+
+        return newTransaction;
+    }
+
+    private void removeInpunsFromUTXos(List<TransactionInput> inputs) {
+        for (TransactionInput input : inputs
+             ) {
+            UTXOs.remove(input.getTransactionOutputId());
+        }
+    }
+
+    private List<TransactionInput> initInputsList(Double value){
+        List<TransactionInput> inputs = new ArrayList<>();
+        double total = 0;
+        for (Map.Entry<String, TransactionOutput> entry : UTXOs.entrySet()
+                ) {
+            TransactionOutput UTXO = entry.getValue();
+            total += UTXO.getValue();
+            inputs.add(new TransactionInput(UTXO.getId()));
+            if (enoughFundsToCoverValue(value, total)){
+                break;
+            }
+        }
+        return inputs;
+    }
+
+    private boolean enoughFundsToCoverValue(Double value, double total) {
+        return total > value;
+    }
+
+    private boolean notEnoughFunds(double value) {
+        return getBalance() < value;
     }
 
     private void setPublicAndPrivateKeys(KeyPair keyPair) {
