@@ -6,4 +6,5 @@ public class HashEncoder {
     public static String encode(String input){
         return DigestUtils.sha256Hex(input);
     }
+
 }
