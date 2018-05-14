@@ -198,7 +198,7 @@ public class JimmyChain  {
     }
 
     private static boolean isPreviousHashBroken(Block previous, Block current) {
-        return previous.getHash().equals(current.getPreviousHash());
+        return !previous.getHash().equals(current.getPreviousHash());
     }
 
     private static boolean isHashBroken(Block current) {
