@@ -44,8 +44,8 @@ public class Wallet {
             TransactionOutput UTXO = entry.getValue();
             if(UTXO.isMine(publicKey)){
                 UTXOs.put(UTXO.getId(), UTXO);
+                total += UTXO.getValue();
             }
-            total += UTXO.getValue();
         }
         return total;
     }
@@ -59,7 +59,7 @@ public class Wallet {
         List<TransactionInput> inputs = initInputsList(value);
         removeInpunsFromUTXos(inputs);
         Transaction newTransaction = new Transaction(publicKey, recirient, value, inputs);
-
+        newTransaction.generateSignature(privateKey);
         return newTransaction;
     }
 
